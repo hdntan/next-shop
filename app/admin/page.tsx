@@ -15,7 +15,7 @@ const AdminPage = () => {
           <div className='flex space-x-5'>
             
             <div>
-    <p>{session?.user?.role}</p>
+           <p>{session?.user?.role}</p>
 
             <p>{session?.user?.name}</p>
             

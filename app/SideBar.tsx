@@ -17,8 +17,14 @@ const SideBar = () => {
         icon: (<UnorderedListOutlined />)
       },
       {
-        label :"Product",
-        href: "/admin/product",
+        label :"Products",
+        href: "/admin/products",
+        icon: (<UnorderedListOutlined />)
+
+      },
+      {
+        label :"Orders",
+        href: "/admin/orders",
         icon: (<UnorderedListOutlined />)
 
       }

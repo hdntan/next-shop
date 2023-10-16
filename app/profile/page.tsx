@@ -13,7 +13,9 @@ const ProfilePage = () => {
           <div>
         <p>{session?.user?.name}</p>
     
+        <p>{session?.user?.email}</p>
         <p>{session?.user?.role}</p>
+
     
           </div>
         ) : <h1>Hello world</h1>

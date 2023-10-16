@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-const ProductPage = () => {
+const ProductsPage = () => {
     const [show, setShow] = useState(null)
   return (
     <>
@@ -88,4 +88,4 @@ const ProductPage = () => {
   )
 }
 
-export default ProductPage
+export default ProductsPage
