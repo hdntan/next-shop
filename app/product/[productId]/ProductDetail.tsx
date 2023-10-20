@@ -1,13 +1,75 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useCart } from '@/app/context/useCart';
+import Item from 'antd/es/list/Item';
+import moment from 'moment';
 
-const ProductDetails = () => {
+import React, { useEffect, useState } from 'react'
+
+interface ProductDetailProps {
+    product: any
+}
+
+export type CartProductType = {
+    id: string,
+    name: string,
+    description: string, 
+    category: string,
+    brand: string,
+    selectedImg: string,
+    quantity: number,
+    price: number
+}
+
+const ProductDetails: React.FC<ProductDetailProps> = ({product}) => {
     const [rotate, setRotate] = useState(false);
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(1);
+    const {cartTotalQty, handleAddProductToCart, cartProducts} = useCart();
+   console.log('product', product)
+    const [isProductInCart, setIsProductInCart] = useState(false);
+
+    const [cartProduct, setCartProduct] = useState<CartProductType>(
+        {
+        id: product.id,
+        name: product.name,
+        description: product.description, 
+        category: product.category,
+        brand: product.brand,
+        selectedImg:product.images[0].image,
+        quantity: 1,
+        price: product.price
+    }
+    )
+
+    // console.log('cartProduct', cartProducts)
+
+
+
+useEffect(() =>{
+    setIsProductInCart(false);
+    if(cartProducts) {
+        const existingIndex = cartProducts.findIndex(
+            (item) => item.id === product.id 
+        );
+        if(existingIndex > -1) {
+            setIsProductInCart(true)
+        }
+    }
+},[cartProducts])
 
     const addCount = () => {
         setCount((prev) => prev + 1);
+        setCartProduct({
+            id: product.id,
+            name: product.name,
+            description: product.description, 
+            category: product.category,
+            brand: product.brand,
+            selectedImg:product.images[0].image,
+            quantity: count,
+            price: product.price
+        })
+        console.log(cartProduct);
     };
 
     const minusCount = () => {
@@ -22,7 +84,7 @@ const ProductDetails = () => {
 
                 <div className="  w-full sm:w-96 md:w-8/12 lg:w-6/12 items-center">
                     <p className=" focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-600">Home / Furniture / Wooden Stool</p>
-                    <h2 className="font-semibold lg:text-4xl text-3xl lg:leading-9 leading-7 text-gray-800 mt-4">Wooden Stool</h2>
+                    <h2 className="font-semibold lg:text-4xl text-3xl lg:leading-9 leading-7 text-gray-800 mt-4">{product.name}</h2>
 
                     <div className=" flex flex-row justify-between  mt-5">
                         <div className=" flex flex-row space-x-3">
@@ -85,28 +147,40 @@ const ProductDetails = () => {
                         </div>
                         <hr className=" bg-gray-200 w-full mt-4" />
                     </div>
-
-                    <button className="focus:outline-none focus:ring-2 hover:bg-black focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-gray-800 w-full py-5 lg:mt-12 mt-6">Add to shopping bag</button>
+                    {
+                        isProductInCart && <p>product added to cart</p>
+                    }
+                    <button onClick={() =>  {!isProductInCart && handleAddProductToCart(cartProduct)}} className="focus:outline-none focus:ring-2 hover:bg-black focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-gray-800 w-full py-5 lg:mt-12 mt-6">Add to shopping bag</button>
+                    {/* <button onClick={() => console.log(cartProduct)}>Add</button> */}
                 </div>
 
                 {/* <!-- Preview Images Div For larger Screen--> */}
 
                 <div className=" w-full sm:w-96 md:w-8/12  lg:w-6/12 flex lg:flex-row flex-col lg:gap-8 sm:gap-6 gap-4">
-                    <div className=" w-full lg:w-8/12 bg-gray-100 flex justify-center items-center">
-                        <img src="https://i.ibb.co/bRg2CJj/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-1.png" alt="Wooden Chair Previw" />
+                    <div className=" w-full  bg-gray-100 flex justify-center items-center">
+                        <img src={product.images[0].image} alt="Wooden Chair Previw" />
                     </div>
-                    <div className=" w-full lg:w-4/12 grid lg:grid-cols-1 sm:grid-cols-4 grid-cols-2 gap-6">
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                            <img src="https://i.ibb.co/0jX1zmR/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-1-1.png" alt="Wooden chair - preview 1" />
-                        </div>
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                            <img src="https://i.ibb.co/7zv1N5Q/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-2.png" alt="Wooden chair - preview 2" />
-                        </div>
-                        <div className="bg-gray-100 flex justify-center items-center py-4">
-                            <img src="https://i.ibb.co/0jX1zmR/sam-moqadam-kvmds-Tr-GOBM-unsplash-removebg-preview-1-1.png" alt="Wooden chair- preview 3" />
-                        </div>
-                    </div>
+                    
+                   
                 </div>
+            </div>
+
+            <div className='mt-10'>
+                {
+                    product.reviews && product.reviews.map((review:any) => {
+                        return <div key={review.id}>
+                            <div className='flex space-x-2 items-center'>
+                                <div>Avatar</div>
+                                <div className='font-bold'>{review?.user.name}</div>
+                                <div>{moment(review.createdDate).fromNow()}</div>
+
+                            </div>
+                            <div>
+                                {review.comment}
+                            </div>
+                        </div>
+                    })
+                }
             </div>
            
         </div>

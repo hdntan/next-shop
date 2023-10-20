@@ -7,6 +7,7 @@ import { redirect } from 'next/dist/server/api-utils'
 import { usePathname } from 'next/navigation'
 import {signIn, signOut} from 'next-auth/react'
 import { useRouter } from 'next/navigation';
+import CartCount from './components/CartCount'
 
 const NavBar = () => {
     const route = useRouter()
@@ -31,6 +32,7 @@ console.log(currentPath);
             label: 'Profile',
             href:`${session?.user.role === "ADMIN" ? '/admin' :'/profile'}`
         },
+        
     ]
 
 //    if(!session?.user) return
@@ -45,6 +47,7 @@ console.log(currentPath);
                     items.map((item) => <Link href={item.href} key={item.href} className={`${item.href === currentPath ? 'text-zinc-900' : 'text-zinc-500'} hover:text-zinc-800 transition-colors`}>{item.label}</Link>)
                 }
             </ul>
+            <CartCount/>
 
 
              {

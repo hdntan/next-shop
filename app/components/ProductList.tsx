@@ -3,24 +3,34 @@
 import React from 'react'
 import ProductCard from './ProductCard'
 
+import { listProduct } from '@/libs/listProduct';
 
+async function getData() {
+    const res = await fetch('http://localhost:3000/api/products', {cache: 'no-store'});
+    if(!res.ok) {
+      throw new Error("Failed to fetch data ");
+    }
+  
+    return res.json();
+  }
 
-const ProductList = () => {
-    const products = [
-        {
-            id: '1'
-        },
-        {
-            id: '2'
-        },
-        {
-            id: '3'
-        },
-        {
-            id: '4'
-        },
+const ProductList = async() => {
+    const products = await getData();
+    // const products = [
+    //     {
+    //         id: '1'
+    //     },
+    //     {
+    //         id: '2'
+    //     },
+    //     {
+    //         id: '3'
+    //     },
+    //     {
+    //         id: '4'
+    //     },
         
-    ]
+    // ]
   return (
     <div className=" 2xl:container 2xl:mx-auto">
     <div className=" bg-gray-50 text-center lg:py-10 md:py-8 py-6">
@@ -45,7 +55,7 @@ const ProductList = () => {
         <div className=" grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-y-12 lg:gap-x-8 sm:gap-y-10 sm:gap-x-6 gap-y-6 lg:mt-12 mt-10">
           
         {
-            products.map((product) => <ProductCard key={product.id}/>)
+            listProduct.map((product, index) => <ProductCard key={index} product={product}/>)
         }
      
             

@@ -4,6 +4,9 @@ import { Inter } from 'next/font/google'
 import NavBar from './NavBar'
 import DefaultLayout from './DefaultLayout'
 import AuthProvider from './context/AuthProvider'
+import { CartContextProvider } from './context/useCart'
+import { CartProvider } from './provider/CartProvider'
+import { Toaster } from 'react-hot-toast'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -21,11 +24,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Toaster toastOptions={{
+          style: {
+            background: "rgb(51 65 85)",
+            color:"#fff"
+          }
+        }}/>
         <AuthProvider>
-         
-          <DefaultLayout>
+        <CartProvider>
+        <DefaultLayout>
           {children}
           </DefaultLayout>
+         
+        </CartProvider>
+         
+          
          
            
         </AuthProvider>

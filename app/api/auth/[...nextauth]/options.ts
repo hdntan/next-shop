@@ -67,6 +67,7 @@ export const options: NextAuthOptions = {
         strategy:'jwt'
     },
 secret: process.env.NEXTAUTH_SECRET, 
+    
     callbacks: {
         async jwt({token, user}) {
             if(user) token.role = user.role
@@ -74,7 +75,13 @@ secret: process.env.NEXTAUTH_SECRET,
         },
          async session({session, token}) {
             if(session?.user) session.user.role = token.role
+                // session.user.id = user.id
+            
             return session
          }
-    }
+         
+         
+    },
+    
+    
 }

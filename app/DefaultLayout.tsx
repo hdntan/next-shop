@@ -4,10 +4,12 @@ import React, { PropsWithChildren } from 'react'
 import NavBar from './NavBar'
 import SideBar from './SideBar'
 import Footer from './Footer'
+import { CartContextProvider } from './context/useCart'
 
 const DefaultLayout = ({children}: PropsWithChildren) => {
   return (
-    <div className='w-full h-full flex flex-col'>
+    
+ <div className='w-full h-full flex flex-col'>
         <NavBar/>
         <div className='flex space-x-6'>
             {/* <SideBar/> */}
@@ -16,6 +18,8 @@ const DefaultLayout = ({children}: PropsWithChildren) => {
        
         <Footer/>
     </div>
+    
+   
   )
 }
 

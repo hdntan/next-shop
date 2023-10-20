@@ -7,7 +7,7 @@ import SideBar from '../SideBar';
 
 const AdminPage = () => {
     const { data: session } = useSession();
-
+  console.log('userId', session?.user?.id)
   return (
     <div>
         {
